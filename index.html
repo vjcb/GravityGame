@@ -12,9 +12,11 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
+
         .container {
             text-align: center;
         }
+
         h1 {
             margin-bottom: 20px;
         }
@@ -30,14 +32,14 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        
+
         // Ball properties
         let ballX = 50;
         let ballY = 300;
         let ballRadius = 10;
         let velocityX = 2;
         let velocityY = -1;
-        
+
         // Black hole properties
         let blackHoleX = null;
         let blackHoleY = null;
@@ -53,18 +55,18 @@
         let wallY = 450;
         let wallSizeX = 10;
         let wallSizeY = 150;
-        
+
         // Click handler to place black hole
         canvas.addEventListener('click', (e) => {
             const rect = canvas.getBoundingClientRect();
             blackHoleX = e.clientX - rect.left;
             blackHoleY = e.clientY - rect.top;
         });
-        
+
         // Draw everything
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             // Draw black hole if placed
             if (blackHoleX !== null) {
                 ctx.beginPath();
@@ -73,7 +75,7 @@
                 ctx.fill();
                 ctx.closePath();
             }
-            
+
             // Draw ball
             ctx.beginPath();
             ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
@@ -84,12 +86,12 @@
             // Draw goal
             ctx.fillStyle = 'cyan';
             ctx.fillRect(goalX, goalY, goalSize, goalSize);
-            
+
             // Draw wall
             ctx.fillStyle = 'red';
             ctx.fillRect(wallX, wallY, wallSizeX, wallSizeY);
         }
-        
+
         // Animation loop
         function animate() {
             // Apply gravity if black hole exists
@@ -97,14 +99,14 @@
                 let dx = blackHoleX - ballX;
                 let dy = blackHoleY - ballY;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                
+
                 if (distance > 1) {
                     let force = 1000 / (distance * distance);
                     velocityX += force * (dx / distance);
                     velocityY += force * (dy / distance);
                 }
             }
-            
+
             // Cap maximum velocity
             let speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
             let maxSpeed = 20;
@@ -112,16 +114,16 @@
                 velocityX = (velocityX / speed) * maxSpeed;
                 velocityY = (velocityY / speed) * maxSpeed;
             }
-            
+
             ballX += velocityX;
             ballY += velocityY;
-            
+
             // Bounce off walls
             if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) velocityX *= -1;
             if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) velocityY *= -1;
 
             // Check if ball reached the goal
-            if (ballX > goalX && ballX < goalX + goalSize && 
+            if (ballX > goalX && ballX < goalX + goalSize &&
                 ballY > goalY && ballY < goalY + goalSize) {
                 ctx.fillStyle = 'green';
                 ctx.font = '48px Arial';
@@ -137,11 +139,11 @@
                 ctx.fillText('You Lose!', canvas.width/2 - 100, canvas.height/2);
                 return;
             }
-                        
+
             draw();
             requestAnimationFrame(animate);
         }
-        
+
         animate();
     </script>
 </body>
