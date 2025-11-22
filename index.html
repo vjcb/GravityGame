@@ -46,10 +46,7 @@
         let velocityX;
         let velocityY;
 
-        // Call initializeMap and resetGame at the start
-        initializeMap();
-        resetGame();
-
+        function initializeMap() {
             // Random direction
             direction = Math.floor(Math.random() * 2);
 
@@ -126,8 +123,9 @@
             resetGame();
         }
 
-        // Call initializeMap at the start
+        // Call initializeMap and resetGame at the start
         initializeMap();
+        resetGame();
 
         // Ball properties
         let ballRadius = 10;
