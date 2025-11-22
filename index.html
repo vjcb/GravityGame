@@ -46,8 +46,10 @@
         let velocityX;
         let velocityY;
 
-        // Function to initialize/regenerate the map
-        function initializeMap() {
+        // Call initializeMap and resetGame at the start
+        initializeMap();
+        resetGame();
+
             // Random direction
             direction = Math.floor(Math.random() * 2);
 
