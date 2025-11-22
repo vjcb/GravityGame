@@ -45,6 +45,10 @@
         let ballY;
         let velocityX;
         let velocityY;
+        let goalX;
+        let goalY;
+        let blackHoleX;
+        let blackHoleY;
 
         function initializeMap() {
             // Random direction
@@ -132,13 +136,9 @@
 
 
         // Black hole properties
-        let blackHoleX = null;
-        let blackHoleY = null;
         let blackHoleRadius = 20;
 
         // Goal properties
-        let goalX;
-        let goalY;
         let goalSize = 40;
 
         // Click handler to place black hole
@@ -231,7 +231,7 @@
             draw();
             requestAnimationFrame(animate);
         }
+
     </script>
 </body>
 </html>
-
