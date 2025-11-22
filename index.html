@@ -49,6 +49,8 @@
         let goalY;
         let blackHoleX;
         let blackHoleY;
+        let isAnimating = false;
+        let animationId = null;
 
         function initializeMap() {
             // Random direction
@@ -101,6 +103,8 @@
         }
 
         function resetGame() {
+            if (animationId) cancelAnimationFrame(animationId);
+
             // Reset ball position
             ballX = 300;
             ballY = 300;
@@ -119,6 +123,7 @@
             blackHoleY = null;
 
             // Restart animation
+            isAnimating = true;
             animate();
         }
 
@@ -178,6 +183,9 @@
 
         // Animation loop
         function animate() {
+            if (!isAnimating) return;
+            animationId = requestAnimationFrame(animate);
+
             // Apply gravity if black hole exists
             if (blackHoleX !== null) {
                 let dx = blackHoleX - ballX;
@@ -211,7 +219,8 @@
                 ballY > goalY && ballY < goalY + goalSize) {
                 ctx.fillStyle = 'green';
                 ctx.font = '48px Arial';
-                ctx.fillText('You Win!', canvas.width/2 - 100, canvas.height/2);
+                ctx.fillText('You Win!', canvas.width / 2 - 100, canvas.height / 2);
+                isAnimating = false;
                 return;
             }
 
@@ -222,11 +231,11 @@
                     ctx.fillStyle = 'red';
                     ctx.font = '48px Arial';
                     ctx.fillText('You Lose!', canvas.width / 2 - 100, canvas.height / 2);
+                    isAnimating = false;
                     return;
                 }
             }
             draw();
-            requestAnimationFrame(animate);
         }
 
         // Call initializeMap and resetGame
