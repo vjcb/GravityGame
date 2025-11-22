@@ -127,9 +127,6 @@
             resetGame();
         }
 
-        // Call initializeMap and resetGame at the start
-        initializeMap();
-        resetGame();
 
         // Ball properties
         let ballRadius = 10;
@@ -231,6 +228,10 @@
             draw();
             requestAnimationFrame(animate);
         }
+
+        // Call initializeMap and resetGame
+        initializeMap();
+        resetGame();
 
     </script>
 </body>
