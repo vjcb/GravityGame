@@ -33,28 +33,83 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
+        // Random direction: 0 = horizontal, 1 = vertical
+        let direction = Math.floor(Math.random() * 2);
+
         // Ball properties
-        let ballX = 50;
+        let ballX = 300;
         let ballY = 300;
         let ballRadius = 10;
-        let velocityX = 2;
-        let velocityY = -1;
+        let velocityX;
+        let velocityY;
+        if (direction === 0) {
+            velocityX = 2;
+            velocityY = 0;
+        } else {
+            velocityX = 0;
+            velocityY = 2;
+        }
 
         // Black hole properties
         let blackHoleX = null;
         let blackHoleY = null;
         let blackHoleRadius = 20;
 
+        // Random corner: 0 = TL, 1 = TR, 2 = BL, 3 = BR
+        let goalLoc = Math.floor(Math.random() * 4);
+
         // Goal properties
-        let goalX = 700;
-        let goalY = 500;
+        let goalX;
+        let goalY;
         let goalSize = 40;
 
+        if (goalLoc === 0) {
+            goalX = 0;
+            goalY = 0;
+        } else if (goalLoc === 1) {
+            goalX = 700;
+            goalY = 0;
+        } else if (goalLoc === 2) {
+            goalX = 0;
+            goalY = 500;
+        } else {
+            goalX = 700;
+            goalY = 500;
+        }
+
         // Wall properties
-        let wallX = 680;
-        let wallY = 450;
-        let wallSizeX = 10;
-        let wallSizeY = 150;
+        let walls = [];
+        let wallType;
+        let wallX;
+        let wallY;
+        let wallSizeX;
+        let wallSizeY;
+
+        for (let i = 0; i < 3; i++) {
+            wallType = Math.floor(Math.random() * 2); // 0 = horizontal, 1 = vertical
+
+            if (wallType === 0) {
+                wallSizeX = 90;
+                wallSizeY = 10;
+            } else {
+                wallSizeX = 10;
+                wallSizeY = 90;
+            }
+
+            if (direction === 0) {
+                do {
+                    wallX = 100 * Math.floor(Math.random() * 7);
+                    wallY = 100 * Math.floor(Math.random() * 7);
+                } while (wallY === 300);
+            } else do {
+                wallX = 100 * Math.floor(Math.random() * 7);
+                wallY = 100 * Math.floor(Math.random() * 7);
+            } while (wallX === 300);
+
+            walls.push({ x: wallX, y: wallY, width: wallSizeX, height: wallSizeY });
+
+        }
+
 
         // Click handler to place black hole
         canvas.addEventListener('click', (e) => {
@@ -89,7 +144,9 @@
 
             // Draw wall
             ctx.fillStyle = 'red';
-            ctx.fillRect(wallX, wallY, wallSizeX, wallSizeY);
+            for (let i = 0; i < 3; i++) {
+                ctx.fillRect(walls[i].x, walls[i].y, walls[i].width, walls[i].height);
+            }
         }
 
         // Animation loop
@@ -132,14 +189,15 @@
             }
 
             // Check if ball hits the wall
-            if (ballX + ballRadius > wallX && ballX - ballRadius < wallX + wallSizeX &&
-                ballY + ballRadius > wallY && ballY - ballRadius < wallY + wallSizeY) {
-                ctx.fillStyle = 'red';
-                ctx.font = '48px Arial';
-                ctx.fillText('You Lose!', canvas.width/2 - 100, canvas.height/2);
-                return;
+            for (let i = 0; i < 3; i++) {
+                if (ballX + ballRadius > walls[i].x && ballX - ballRadius < walls[i].x + walls[i].width &&
+                    ballY + ballRadius > walls[i].y && ballY - ballRadius < walls[i].y + walls[i].height) {
+                    ctx.fillStyle = 'red';
+                    ctx.font = '48px Arial';
+                    ctx.fillText('You Lose!', canvas.width / 2 - 100, canvas.height / 2);
+                    return;
+                }
             }
-
             draw();
             requestAnimationFrame(animate);
         }
