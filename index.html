@@ -46,7 +46,6 @@
         let velocityX;
         let velocityY;
 
-        // Function to initialize/regenerate the map
         function initializeMap() {
             // Random direction
             direction = Math.floor(Math.random() * 2);
@@ -83,13 +82,13 @@
 
                 if (direction === 0) {
                     do {
-                        wallX = 100 * Math.floor(Math.random() * 6);
-                        wallY = 100 * Math.floor(Math.random() * 6);
+                        wallX = 100 * Math.floor(Math.random() * 7);
+                        wallY = 100 * Math.floor(Math.random() * 5);
                     } while (wallY === 300);
                 } else {
                     do {
-                        wallX = 100 * Math.floor(Math.random() * 6);
-                        wallY = 100 * Math.floor(Math.random() * 6);
+                        wallX = 100 * Math.floor(Math.random() * 7);
+                        wallY = 100 * Math.floor(Math.random() * 5);
                     } while (wallX === 300);
                 }
 
@@ -124,8 +123,9 @@
             resetGame();
         }
 
-        // Call initializeMap at the start
+        // Call initializeMap and resetGame at the start
         initializeMap();
+        resetGame();
 
         // Ball properties
         let ballRadius = 10;
@@ -232,7 +232,6 @@
             requestAnimationFrame(animate);
         }
 
-        animate();
     </script>
 </body>
 </html>
